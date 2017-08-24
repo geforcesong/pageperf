@@ -1,4 +1,5 @@
 const Crawler = require('./crawler.js');
+const config  = require('./sys.config.js');
 class Page {
     constructor(pageName, url) {
         this.pageName = pageName;

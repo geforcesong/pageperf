@@ -5,7 +5,7 @@
   "main": "main.js",
   "dependencies": {
     "eslint": "^4.5.0",
-    "mysql": "^2.14.1",
+    "promise-mysql": "^3.0.2",
     "request": "^2.81.0"
   },
   "devDependencies": {},
