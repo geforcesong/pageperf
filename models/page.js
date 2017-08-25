@@ -15,7 +15,7 @@ class Page {
     save() {
         let connection = undefined;
         let self = this;
-        mysql.createConnection(config.databaseConnection).then(function (conn) {
+        return mysql.createConnection(config.databaseConnection).then(function (conn) {
             connection = conn;
             let sql = `INSERT INTO PagePerf(PageName, PageUrl, ElapsedTime, TestLocation, CreateTime) Values('${self.pageName}', '${self.pageUrl}', ${self.elapsedTime}, 'Shanghai', now());`;
             return conn.query(sql);

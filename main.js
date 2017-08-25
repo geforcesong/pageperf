@@ -15,7 +15,7 @@ function getUrlsInDb() {
         let connection = null;
         mysql.createConnection(config.databaseConnection).then(function (conn) {
             connection = conn;
-            let sql = 'select * from MovotoPerf.PageSource';
+            let sql = 'select * from PageSource where IsNewAdded = 1;';
             return conn.query(sql);
         }).then((rows) => {
             connection && connection.end();
