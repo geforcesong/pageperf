@@ -17,7 +17,7 @@ class Page {
         let self = this;
         return mysql.createConnection(config.databaseConnection).then(function (conn) {
             connection = conn;
-            let sql = `INSERT INTO PagePerf(PageName, PageUrl, ElapsedTime, TestLocation, CreateTime) Values('${self.pageName}', '${self.pageUrl}', ${self.elapsedTime}, 'Shanghai', now());`;
+            let sql = `INSERT INTO PagePerf(PageName, PageUrl, ElapsedTime, TestLocation, CreateTime, StatusCode) Values('${self.pageName}', '${self.pageUrl}', ${self.elapsedTime}, 'Shanghai', now(), ${self.statusCode});`;
             return conn.query(sql);
         }).then((rows) => {
             self.pageId = (rows && rows.insertId) ? rows.insertId : 0;
@@ -48,6 +48,7 @@ class Page {
             var crawler = new Crawler(this.pageUrl);
             crawler.crawl().then((ret) => {
                 self.elapsedTime = ret.elapsedTime;
+                self.statusCode = ret.statusCode;
                 self._analyzeBody(ret.body);
                 return resolve(self);
             });

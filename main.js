@@ -38,7 +38,7 @@ async function saveUrls(urls) {
         return;
     }
     for(let item of urls){
-        await SavePage(item.pageName, item.PageUrl);
+        await SavePage(item.PageName, item.PageUrl);
     }
     console.log('done') ;
 }
