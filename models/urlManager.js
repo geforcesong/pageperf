@@ -22,20 +22,20 @@ class UrlManager {
         });
     }
 
-    async saveUrls(urls) {
+    async saveUrls(urls, options) {
         if (!urls || !urls.length) {
             return;
         }
         for(let item of urls){
-            await this.SavePage(item.PageName, item.PageUrl);
+            await this.SavePage(item.PageName, item.PageUrl, options.sprintName);
         }
     }
 
-    async SavePage(pageName, url) {
+    async SavePage(pageName, url, sprintName) {
         if (!url) {
             return '';
         }
-        let page = new Page(pageName, url);
+        let page = new Page(pageName, url, sprintName);
         return new Promise((resolve, reject)=>{
             page.analyze().then((self) => {
                 return self.save();
