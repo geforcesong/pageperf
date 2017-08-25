@@ -2,7 +2,7 @@ const Crawler = require('../utilities/crawler.js');
 const config = require('../sys.config.js');
 const mysql = require('promise-mysql');
 class Page {
-    constructor(pageName, url) {
+    constructor(pageName, url, sprintName) {
         this.pageName = pageName;
         this.pageUrl = url;
         if (this.pageUrl.indexOf('?perfdebugger=1') < 0) {
@@ -10,6 +10,7 @@ class Page {
         }
         this.pagePerfDetails = [];
         this.pageId = undefined;
+        this.sprintName = sprintName || '';
     }
 
     save() {
@@ -17,7 +18,7 @@ class Page {
         let self = this;
         return mysql.createConnection(config.databaseConnection).then(function (conn) {
             connection = conn;
-            let sql = `INSERT INTO PagePerf(PageName, PageUrl, ElapsedTime, TestLocation, CreateTime, StatusCode) Values('${self.pageName}', '${self.pageUrl}', ${self.elapsedTime}, 'Shanghai', now(), ${self.statusCode});`;
+            let sql = `INSERT INTO PagePerf(PageName, PageUrl, ElapsedTime, TestLocation, CreateTime, StatusCode, SprintName) Values('${self.pageName}', '${self.pageUrl}', ${self.elapsedTime}, 'Shanghai', now(), ${self.statusCode}, '${self.sprintName}');`;
             return conn.query(sql);
         }).then((rows) => {
             self.pageId = (rows && rows.insertId) ? rows.insertId : 0;
