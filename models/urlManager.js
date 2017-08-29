@@ -9,7 +9,7 @@ class UrlManager {
             let connection = null;
             mysql.createConnection(config.databaseConnection).then(function (conn) {
                 connection = conn;
-                let sql = 'select * from PageSource where IsNewAdded = 1;';
+                let sql = 'select * from PageSource;';
                 return conn.query(sql);
             }).then((rows) => {
                 connection && connection.end();
