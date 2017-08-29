@@ -11,7 +11,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "one": "node main --sp 'test' --url http://www.movoto.com/palo-alto-ca/2466-w-bayshore-rd-1-palo-alto-ca-94303-100_81341205/for-sale/ --nosave",
+    "test": "node main --sp sprint#22"
   },
   "repository": {
     "type": "git",

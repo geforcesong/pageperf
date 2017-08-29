@@ -4,8 +4,11 @@ const Page = require('./page.js');
 
 class UrlManager {
 
-    async getUrlsInDb() {
+    async getUrlsInDb(options) {
         return new Promise((resolve, reject) => {
+            if (options.url) {
+                return resolve([{ PageUrl: options.url }]);
+            }
             let connection = null;
             mysql.createConnection(config.databaseConnection).then(function (conn) {
                 connection = conn;
@@ -26,22 +29,26 @@ class UrlManager {
         if (!urls || !urls.length) {
             return;
         }
-        for(let item of urls){
-            await this.SavePage(item.PageName, item.PageUrl, options.sprintName);
+        for (let item of urls) {
+            await this.SavePage(item.PageName, item.PageUrl, options);
         }
     }
 
-    async SavePage(pageName, url, sprintName) {
+    async SavePage(pageName, url, options) {
         if (!url) {
             return '';
         }
-        let page = new Page(pageName, url, sprintName);
-        return new Promise((resolve, reject)=>{
+        let page = new Page(pageName, url, options.sprintName);
+        return new Promise((resolve, reject) => {
             page.analyze().then((self) => {
-                return self.save();
-            }).then((d)=>{
+                if (options.saveToDb) {
+                    return self.save();
+                }
+                console.log('Do not need save for this URL');
+                return null;
+            }).then((d) => {
                 return resolve(true);
-            }).catch((err)=>{
+            }).catch((err) => {
                 return reject(err);
             });
         })

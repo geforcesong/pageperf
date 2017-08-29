@@ -13,11 +13,13 @@ class Crawler {
             }
             Request(options).then((ret) => {
                 let body = (ret && ret.body) ? ret.body : undefined;
+                let length = parseInt(ret.headers['content-length']);
                 let result = {
                     body: body,
                     statusCode: ret.statusCode,
                     elapsedTime: ret.elapsedTime,
-                    url: this.url
+                    url: this.url,
+                    contentLength: isNaN(length) ? 0 : length
                 }
                 return resolve(result);
             });
