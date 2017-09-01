@@ -11,6 +11,7 @@ class Page {
         this.pagePerfDetails = [];
         this.pageId = undefined;
         this.sprintName = sprintName || '';
+        this.contentLength = 0;
     }
 
     save() {
@@ -18,7 +19,7 @@ class Page {
         let self = this;
         return mysql.createConnection(config.databaseConnection).then(function (conn) {
             connection = conn;
-            let sql = `INSERT INTO PagePerf(PageName, PageUrl, ElapsedTime, TestLocation, CreateTime, StatusCode, SprintName) Values('${self.pageName}', '${self.pageUrl}', ${self.elapsedTime}, 'Shanghai', now(), ${self.statusCode}, '${self.sprintName}');`;
+            let sql = `INSERT INTO PagePerf(PageName, PageUrl, ElapsedTime, TestLocation, CreateTime, StatusCode, SprintName, ContentLength) Values('${self.pageName}', '${self.pageUrl}', ${self.elapsedTime}, 'Shanghai', now(), ${self.statusCode}, '${self.sprintName}', ${self.contentLength});`;
             return conn.query(sql);
         }).then((rows) => {
             self.pageId = (rows && rows.insertId) ? rows.insertId : 0;
@@ -50,6 +51,7 @@ class Page {
             crawler.crawl().then((ret) => {
                 self.elapsedTime = ret.elapsedTime;
                 self.statusCode = ret.statusCode;
+                self.contentLength = ret.contentLength;
                 self._analyzeBody(ret.body);
                 return resolve(self);
             });
